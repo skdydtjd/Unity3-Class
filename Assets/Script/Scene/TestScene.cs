@@ -4,17 +4,43 @@ using UnityEngine;
 
 public class TestScene : MonoBehaviour
 {
+    private TestSceneUI _ui;
+
     void Start()
     {
-        // 1. ResourceManager 준비 (Instance 호출 시 자동 생성)
+        // UI 프리팹 생성 (경로는 실제 프리팹 위치에 맞게 수정하세요)
+        GameObject uiGo = ResourceManager.Instance.Instantiate("Prefabs/UI/TestSceneUI/@UI_Root");
+
+        if (uiGo != null)
+        {
+            // 생성된 오브젝트에서 바로 스크립트를 참조
+            _ui = uiGo.GetComponent<TestSceneUI>();
+        }
+
+        // 초기화 프로세스 시작
+        StartCoroutine(LoadingProcess());
+    }
+
+    private System.Collections.IEnumerator LoadingProcess()
+    {
         ResourceManager rm = ResourceManager.Instance;
         DataManager dm = DataManager.Instance;
 
-        // 2. LoadAll을 사용하여 'Resources/Data' 폴더 내의 모든 TextAsset(JSON 포함)을 미리 로드
-        // 이렇게 하면 폴더 내의 모든 파일이 ResourceManager의 Dictionary 캐시에 저장됩니다.
+        // [Step 1] 리소스 로드
         rm.LoadAll<TextAsset>("Data");
-        dm.Init();
+        rm.LoadAll<GameObject>("Prefabs/TestSceneUI");
 
+        yield return null;
+
+        _ui.UpdateProgress(1, 2, "1) 리소스 로드 완료");
+
+        yield return new WaitForSeconds(0.5f); // 시각적 확인을 위한 짧은 대기
+
+        // [Step 2] 데이터 가공 (JSON -> Dictionary)
+        dm.Init();
+        _ui.UpdateProgress(2, 2, "2) 데이터 로드 완료");
+
+        Debug.Log("<color=cyan>초기화 완료: F키를 눌러 씬을 전환하세요.</color>");
     }
 
     private void Update()
