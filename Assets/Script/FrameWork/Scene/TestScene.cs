@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TestScene : MonoBehaviour
 {
-    private TestSceneUI _ui;
+    private IntroUI _ui;
 
     void Start()
     {
         // 1. UIManager를 통해 Scene UI 생성 (자동으로 @UI_Root 아래에 배치됨)
-        _ui = UIManager.Instance.ShowSceneUI<TestSceneUI>("TSUI");
+        _ui = UIManager.Instance.ShowSceneUI<IntroUI>("Intro_UI");
 
         // 초기화 프로세스 시작
         StartCoroutine(LoadingProcess());
@@ -22,18 +22,18 @@ public class TestScene : MonoBehaviour
 
         // [Step 1] 리소스 로드
         rm.LoadAll<TextAsset>("Data");
-        rm.LoadAll<GameObject>("Prefabs/TestSceneUI");
+        rm.LoadAll<GameObject>("Prefabs");
 
         yield return null;
 
-        // _ui.UpdateProgress(1, 2, "1) 리소스 로드 완료");
+        _ui.UpdateProgress(1, 2, "1) 리소스 로드 완료");
 
         yield return new WaitForSeconds(1f); // 시각적 확인을 위한 짧은 대기
 
         // [Step 2] 데이터 가공 (JSON -> Dictionary)
         dm.Init();
 
-        // _ui.UpdateProgress(2, 2, "2) 데이터 로드 완료");
+        _ui.UpdateProgress(2, 2, "2) 데이터 로드 완료");
 
         Debug.Log("<color=cyan>초기화 완료: 아무 키를 눌러 씬을 전환하세요.</color>");
     }

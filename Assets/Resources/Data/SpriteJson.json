@@ -1,0 +1,16 @@
+{
+  "sprites": [
+    {
+      "id": 101,
+      "name": "Forest_BG",
+      "category": 1,
+      "resourcePath": "Sprites/Background/Forest"
+    },
+    {
+      "id": 201,
+      "name": "Warrior_Idle",
+      "category": 2,
+      "resourcePath": "Sprites/Characters/Warrior"
+    }
+  ]
+}

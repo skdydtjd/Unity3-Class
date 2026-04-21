@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static SpriteData;
 
 // 데이터 파싱을 위한 인터페이스
 public interface IDataLoader<Key, Item>
@@ -19,6 +20,8 @@ public class DataManager : GenericSingleton<DataManager>
 {
     // 런타임에 사용할 데이터 캐시 (예: 몬스터 스탯 사전)
     public Dictionary<int, MonsterData> _monsters = new Dictionary<int, MonsterData>();
+
+    //public Dictionary<int, SpriteData> _sprites = new Dictionary<int, SpriteData>();
 
     public Dictionary<int, MonsterData> Monsters => _monsters;
 
@@ -76,6 +79,8 @@ public class DataManager : GenericSingleton<DataManager>
         // 1. JSON 로드 및 가공
         // Resources/Data/MonsterJson.json 파일을 읽어와 Monsters 딕셔너리를 채움
         LoadJson<MonsterDataLoader, int, MonsterData>("MonsterJson", ref _monsters);
+        //LoadJson<SpriteDataLoader, int, SpriteData>("SpriteJson", ref _sprites);
+
 
         Debug.Log($"[DataManager] {Monsters.Count}개의 몬스터 데이터 로드 완료.");
     }

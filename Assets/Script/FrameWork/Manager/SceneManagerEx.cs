@@ -7,7 +7,7 @@ public class SceneManagerEx : GenericSingleton<SceneManagerEx>
     public BaseScene CurrentScene { get; private set; }
 
     // 외부에서 SceneManagerEx.Instance.CurrentSceneType으로 바로 접근 가능
-    public EScene CurrentSceneType => (CurrentScene != null) ? CurrentScene.SceneType : EScene.IntroScene;
+    public EScene CurrentSceneType => (CurrentScene != null) ? CurrentScene.SceneType : EScene.TestScene;
 
     public void SetCurrentScene(BaseScene scene)
     {

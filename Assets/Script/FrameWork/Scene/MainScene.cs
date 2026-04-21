@@ -20,6 +20,11 @@ public class MainScene : BaseScene
 
         if (current == this)
             Debug.Log("<color=green>[성공] MainScene이 싱글톤에 정상 등록되었습니다.</color>");
+
+        UIManager.Instance.ShowSceneUI<MainSceneUI>("MainScene_UI");
+
+        // IntroScene에서 로드된 몬스터 데이터를 확인합니다.
+        Debug.Log($"[MainScene] 로드된 데이터 확인: {DataManager.Instance.Monsters.Count}마리의 몬스터");
     }
 
     // 예: 게임 시작 버튼 클릭 이벤트
