@@ -10,4 +10,14 @@ namespace DefinesEnum
         GameScene,
         ResultScene
     }
+
+    public enum EEventType
+    {
+        OnSceneEnter,
+        OnSceneExit,
+        LevelUpEvent,
+        LearnSkillEvent,
+        AttackEvent,
+        DieEvent
+    }
 }

@@ -16,7 +16,7 @@ public interface IValidation
     bool Validate();
 }
 
-public class DataManager : GenericSingleton<DataManager>
+public class DataManager
 {
     // 런타임에 사용할 데이터 캐시 (예: 몬스터 스탯 사전)
     public Dictionary<int, MonsterData> _monsters = new Dictionary<int, MonsterData>();
@@ -29,7 +29,7 @@ public class DataManager : GenericSingleton<DataManager>
     public void LoadJson<Loader, Key, Item>(string path, ref Dictionary<Key, Item> dict)
         where Loader : IDataLoader<Key, Item>
     {
-        TextAsset textAsset = ResourceManager.Instance.Get<TextAsset>($"Data/{path}");
+        TextAsset textAsset = Managers.Resource.Get<TextAsset>($"Data/{path}");
         if (textAsset == null) return;
 
         Loader loader = JsonUtility.FromJson<Loader>(textAsset.text);
@@ -42,7 +42,7 @@ public class DataManager : GenericSingleton<DataManager>
     // 2. ScriptableObject 로드
     public T LoadScriptableObject<T>(string path) where T : ScriptableObject, IValidation
     {
-        T so = ResourceManager.Instance.Get<T>($"Data/{path}");
+        T so = Managers.Resource.Get<T>($"Data/{path}");
         if (so != null && so.Validate())
         {
             Debug.Log($"[DataManager] SO 로드 완료: {path}");
@@ -54,7 +54,7 @@ public class DataManager : GenericSingleton<DataManager>
     // 3. GameObject 및 프리팹 관련 데이터 로드 (컴포넌트 검증 포함)
     public GameObject LoadData(string path)
     {
-        GameObject go = ResourceManager.Instance.Get<GameObject>(path);
+        GameObject go = Managers.Resource.Get<GameObject>(path);
         if (go == null) return null;
 
         // 예: 프리팹에 필수 컴포넌트가 있는지 검증하는 로직 추가 가능

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UIManager : GenericSingleton<UIManager>
+public class UIManager
 {
     private int _order = 10; // 팝업 등의 소팅 오더 관리용
     private GameObject _uiRoot = null;
@@ -17,7 +17,7 @@ public class UIManager : GenericSingleton<UIManager>
                 if (_uiRoot == null)
                 {
                     // 1. 루트 생성 시 이름을 바로 고정하여 Find 중복 방지
-                    _uiRoot = ResourceManager.Instance.Instantiate("Prefabs/UI/TestSceneUI/@UI_Root");
+                    _uiRoot = Managers.Resource.Instantiate("Prefabs/UI/TestSceneUI/@UI_Root");
 
                     if (_uiRoot != null) 
                         _uiRoot.name = "@UI_Root";
@@ -37,7 +37,7 @@ public class UIManager : GenericSingleton<UIManager>
         // 경로 규칙: UI/Scene/프리팹이름
         string path = $"Prefabs/UI/TestSceneUI/SceneUI/{name}";
 
-        GameObject go = ResourceManager.Instance.Instantiate(path);
+        GameObject go = Managers.Resource.Instantiate(path);
         T sceneUI = go.GetComponent<T>();
 
         // UI_Root 하위로 배치
@@ -72,7 +72,7 @@ public class UIManager : GenericSingleton<UIManager>
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
-        GameObject go = ResourceManager.Instance.Instantiate($"UI/Popup/{name}");
+        GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}");
         T popup = go.GetComponent<T>();
 
         go.transform.SetParent(Root.transform);

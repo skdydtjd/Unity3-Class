@@ -13,6 +13,6 @@ public class PopUp_UI : UI_Base
     public virtual void ClosePopup()
     {
         // 팝업 닫기 로직 (보통 UIManager를 통해 삭제)
-        ResourceManager.Instance.Destroy(gameObject);
+        Managers.Resource.Destroy(gameObject);
     }
 }

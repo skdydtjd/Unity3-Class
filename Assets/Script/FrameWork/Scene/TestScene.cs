@@ -9,7 +9,7 @@ public class TestScene : MonoBehaviour
     void Start()
     {
         // 1. UIManager를 통해 Scene UI 생성 (자동으로 @UI_Root 아래에 배치됨)
-        _ui = UIManager.Instance.ShowSceneUI<IntroUI>("Intro_UI");
+        _ui = Managers.UI.ShowSceneUI<IntroUI>("Intro_UI");
 
         // 초기화 프로세스 시작
         StartCoroutine(LoadingProcess());
@@ -17,21 +17,15 @@ public class TestScene : MonoBehaviour
 
     private System.Collections.IEnumerator LoadingProcess()
     {
-        ResourceManager rm = ResourceManager.Instance;
-        DataManager dm = DataManager.Instance;
-
         // [Step 1] 리소스 로드
-        rm.LoadAll<TextAsset>("Data");
-        rm.LoadAll<GameObject>("Prefabs");
+        // [Step 2] 데이터 가공 (JSON -> Dictionary)
+        Managers.Instance.InitAllManagers();
 
         yield return null;
 
         _ui.UpdateProgress(1, 2, "1) 리소스 로드 완료");
 
         yield return new WaitForSeconds(1f); // 시각적 확인을 위한 짧은 대기
-
-        // [Step 2] 데이터 가공 (JSON -> Dictionary)
-        dm.Init();
 
         _ui.UpdateProgress(2, 2, "2) 데이터 로드 완료");
 
@@ -46,7 +40,7 @@ public class TestScene : MonoBehaviour
             VerifyMonsterData();
 
             // 4. 메인 씬으로 이동
-            SceneManagerEx.Instance.LoadScene(EScene.MainScene);
+            Managers.Scene.LoadScene(EScene.MainScene);
         }
     }
 
@@ -56,7 +50,7 @@ public class TestScene : MonoBehaviour
         report.AppendLine("<color=orange><b>===== DataManager Full Inventory Report =====</b></color>");
 
         // 1. 데이터 로드 여부 및 전체 개수 확인
-        var monsters = DataManager.Instance.Monsters;
+        var monsters = Managers.Data.Monsters;
         bool isLoaded = (monsters != null && monsters.Count > 0);
 
         report.AppendLine($"[시스템 상태] 로드 완료: {(isLoaded ? "<color=green>YES</color>" : "<color=red>NO</color>")}");

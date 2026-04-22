@@ -27,7 +27,7 @@ public class SpriteData : IValidation
         get
         {
             if (_sprite == null)
-                _sprite = ResourceManager.Instance.Get<Sprite>(resourcePath);
+                _sprite = Managers.Resource.Get<Sprite>(resourcePath);
             return _sprite;
         }
     }

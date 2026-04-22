@@ -1,10 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceManager : GenericSingleton<ResourceManager>
+public class ResourceManager
 {
     // 로드된 리소스를 관리하는 캐시 (Key: 경로 또는 이름)
     private Dictionary<string, Object> _resources = new Dictionary<string, Object>();
+
+    public void Init()
+    {
+        LoadAll<TextAsset>("Data");
+        LoadAll<GameObject>("Prefabs");
+    }
 
     // 1. 특정 폴더 내의 모든 리소스 로드
     public void LoadAll<T>(string path) where T : Object

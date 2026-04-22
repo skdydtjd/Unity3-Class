@@ -8,7 +8,7 @@ public abstract class BaseScene : MonoBehaviour
     protected virtual void Awake()
     {
         // 싱글톤 매니저를 활용하여 현재 씬 등록
-        SceneManagerEx.Instance.SetCurrentScene(this);
+        Managers.Scene.SetCurrentScene(this);
     }
 
     protected abstract void Init();

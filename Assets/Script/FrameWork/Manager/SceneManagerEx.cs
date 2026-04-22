@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using DefinesEnum;
 
-public class SceneManagerEx : GenericSingleton<SceneManagerEx>
+public class SceneManagerEx
 {
     // 현재 활성화된 씬의 BaseScene 스크립트를 참조
     public BaseScene CurrentScene { get; private set; }
@@ -17,9 +18,16 @@ public class SceneManagerEx : GenericSingleton<SceneManagerEx>
 
     public void LoadScene(EScene type)
     {
+        // 1. 이벤트 매니저를 통한 알림 (EEventType 활용)
+        Managers.Event.TriggerEvent(EEventType.OnSceneExit, CurrentSceneType);
+
         // 씬 전환 시 기존 데이터 정리 (선택 사항)
         if (CurrentScene != null) CurrentScene.Clear();
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene(type.ToString());
+        // 2. 씬 전환
+        SceneManager.LoadScene(type.ToString());
+
+        // 3. 전환 후 알림
+        Managers.Event.TriggerEvent(EEventType.OnSceneEnter, type);
     }
 }

@@ -36,7 +36,7 @@ public class MainSceneUI : Scene_UI
         var backBtn = GetButton(Buttons.BackButton.ToString());
         if (backBtn != null)
         {
-            backBtn.onClick.AddListener(() => Debug.Log("Back To Intro?"));
+            backBtn.onClick.AddListener(() => Debug.Log("뒤로 가기 버튼이 눌러졌습니다."));
         }
     }
 

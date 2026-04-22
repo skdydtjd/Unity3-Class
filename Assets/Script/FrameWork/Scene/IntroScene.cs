@@ -11,7 +11,7 @@ public class IntroScene : MonoBehaviour
     void Start()
     {
         // 1. 인트로 전용 UI 생성 (ShowSceneUI 사용)
-        _ui = UIManager.Instance.ShowSceneUI<IntroUI>("Intro_UI");
+        _ui = Managers.UI.ShowSceneUI<IntroUI>("Intro_UI");
 
         // 2. 초기화 프로세스 시작
         StartCoroutine(LoadingProcess());
@@ -19,18 +19,12 @@ public class IntroScene : MonoBehaviour
 
     private IEnumerator LoadingProcess()
     {
-        ResourceManager rm = ResourceManager.Instance;
-        DataManager dm = DataManager.Instance;
-
         // [Step 1] 리소스 로드
-        rm.LoadAll<TextAsset>("Data");
-        rm.LoadAll<GameObject>("Prefabs");
+        // [Step 2] 데이터 가공
+        Managers.Instance.InitAllManagers();
 
         _ui.UpdateProgress(1, 2, "Resources Loaded...");
         yield return new WaitForSeconds(0.5f);
-
-        // [Step 2] 데이터 가공
-        dm.Init();
 
         _ui.UpdateProgress(2, 2, "Data Initialized...");
         yield return new WaitForSeconds(0.5f);
@@ -46,7 +40,7 @@ public class IntroScene : MonoBehaviour
         {
             VerifyMonsterData();
 
-            SceneManagerEx.Instance.LoadScene(EScene.MainScene);
+            Managers.Scene.LoadScene(EScene.MainScene);
         }
     }
 
@@ -58,7 +52,7 @@ public class IntroScene : MonoBehaviour
         report.AppendLine("<color=orange><b>===== DataManager Full Inventory Report =====</b></color>");
 
         // 1. 데이터 로드 여부 및 전체 개수 확인
-        var monsters = DataManager.Instance.Monsters;
+        var monsters = Managers.Data.Monsters;
         bool isLoaded = (monsters != null && monsters.Count > 0);
 
         report.AppendLine($"[시스템 상태] 로드 완료: {(isLoaded ? "<color=green>YES</color>" : "<color=red>NO</color>")}");
@@ -95,7 +89,7 @@ public class IntroScene : MonoBehaviour
         // 데이터가 정상 로드되었을 때만 다음 씬으로 전환 가능하게 처리
         if (isLoaded)
         {
-            Debug.Log("<color=cyan>전체 데이터 검증 완료. MainScene으로 이동할 준비가 되었습니다.</color>");
+            Debug.Log("<color=cyan>전체 데이터 검증 완료. MainMenu으로 이동할 준비가 되었습니다.</color>");
         }
     }
 }
