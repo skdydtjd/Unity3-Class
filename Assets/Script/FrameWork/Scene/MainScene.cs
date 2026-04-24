@@ -24,7 +24,7 @@ public class MainScene : BaseScene
         Managers.UI.ShowSceneUI<MainSceneUI>("MainScene_UI");
 
         // IntroScene에서 로드된 몬스터 데이터를 확인합니다.
-        Debug.Log($"[MainScene] 로드된 데이터 확인: {Managers.Data.Monsters.Count}마리의 몬스터");
+        Debug.Log($"[MainScene] 로드된 데이터 확인: {Managers.Data._monsters.Count}마리의 몬스터");
     }
 
     // 예: 게임 시작 버튼 클릭 이벤트

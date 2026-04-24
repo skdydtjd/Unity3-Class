@@ -50,7 +50,7 @@ public class TestScene : MonoBehaviour
         report.AppendLine("<color=orange><b>===== DataManager Full Inventory Report =====</b></color>");
 
         // 1. 데이터 로드 여부 및 전체 개수 확인
-        var monsters = Managers.Data.Monsters;
+        var monsters = Managers.Data._monsters;
         bool isLoaded = (monsters != null && monsters.Count > 0);
 
         report.AppendLine($"[시스템 상태] 로드 완료: {(isLoaded ? "<color=green>YES</color>" : "<color=red>NO</color>")}");

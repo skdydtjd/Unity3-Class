@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace DefinesEnum
@@ -19,5 +20,14 @@ namespace DefinesEnum
         LearnSkillEvent,
         AttackEvent,
         DieEvent
+    }
+
+    public enum EStatType
+    {
+        None = 0,
+        MaxHp,      // hp
+        Attack,     // attack
+        MoveSpeed,  // speed
+        AttackRange // range
     }
 }

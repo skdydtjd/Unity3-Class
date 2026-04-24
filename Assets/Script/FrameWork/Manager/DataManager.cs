@@ -1,5 +1,8 @@
+using DefinesEnum;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static MasterSO;
 using static SpriteData;
 
 // 데이터 파싱을 위한 인터페이스
@@ -20,10 +23,11 @@ public class DataManager
 {
     // 런타임에 사용할 데이터 캐시 (예: 몬스터 스탯 사전)
     public Dictionary<int, MonsterData> _monsters = new Dictionary<int, MonsterData>();
+    public Dictionary<int, SpriteData> _sprites = new Dictionary<int, SpriteData>();
+    public Dictionary<EStatType, StatData> _stats = new Dictionary<EStatType, StatData>();
 
-    //public Dictionary<int, SpriteData> _sprites = new Dictionary<int, SpriteData>();
-
-    public Dictionary<int, MonsterData> Monsters => _monsters;
+    // 설정 데이터 캐시
+    public MasterSO _masterConfig;
 
     // 1. JSON 데이터 로드 및 가공
     public void LoadJson<Loader, Key, Item>(string path, ref Dictionary<Key, Item> dict)
@@ -76,12 +80,22 @@ public class DataManager
 
     public void Init()
     {
-        // 1. JSON 로드 및 가공
+        // 1. MasterSO 로드
+        _masterConfig = LoadScriptableObject<MasterSO>("SO/Monsters");
+
+        // 2. SO를 통해 Stats 딕셔너리 초기화
+        if (_masterConfig != null)
+        {
+            _stats = _masterConfig.MakeDict();
+            Debug.Log($"[DataManager] {_stats.Count}개의 스탯 데이터 로드 완료.");
+        }
+
+        // 2. JSON 로드 및 가공
         // Resources/Data/MonsterJson.json 파일을 읽어와 Monsters 딕셔너리를 채움
-        LoadJson<MonsterDataLoader, int, MonsterData>("MonsterJson", ref _monsters);
-        //LoadJson<SpriteDataLoader, int, SpriteData>("SpriteJson", ref _sprites);
+        LoadJson<MonsterDataLoader, int, MonsterData>("MonsterData", ref _monsters);
+        //LoadJson<SpriteDataLoader, int, SpriteData>("SpriteData", ref _sprites);
 
 
-        Debug.Log($"[DataManager] {Monsters.Count}개의 몬스터 데이터 로드 완료.");
+        Debug.Log($"[DataManager] {_monsters.Count}개의 몬스터 데이터 로드 완료.");
     }
 }
